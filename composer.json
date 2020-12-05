@@ -1,0 +1,25 @@
+{
+    "name": "pkaraba/goulash",
+    "description": "Various PHP utility classes for everyday use. Feel free to add yours.",
+    "keywords": ["goulash", "utility"],
+    "type": "library",
+    "license": "Apache 2",
+    "authors": [
+        {
+            "name": "Peter Karaba",
+            "email": "karaba.peter12@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.3",
+        "illuminate/collections": "^8.17"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Goulash\\": "src/"
+        }
+    }
+}
