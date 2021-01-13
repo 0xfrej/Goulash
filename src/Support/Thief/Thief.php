@@ -9,27 +9,44 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
 
+/**
+ * Helper class for accessing inaccessible properties and methods
+ * @package Goulash\Support\Thief
+ */
 class Thief extends ReflectionClass
 {
     /**
-     * @var object Original object instance
+     * Original object instance
+     * @var object
      */
     private $object;
 
     /**
-     * @var Collection|ReflectionMethod[] Filtered collection of methods
+     * Filtered collection of methods
+     *
+     * Abstract, constructor, destructor methods are filtered
+     *
+     * @var Collection|ReflectionMethod[]
      */
     private $methods;
 
     /**
      * Thief constructor.
-     * @param object $object
+     *
+     * Constructs new Thief instance. When fully qualified class name
+     * is passed as parameter, new instance of that class is created.
+     * Otherwise given instance is used to create reflection.
+     *
+     * @param object|string $objectOrClass Instance or fully qualified class name
      * @throws ReflectionException
      */
-    public function __construct(object $object)
+    public function __construct($objectOrClass)
     {
-        parent::__construct($object);
-        $this->object = $object;
+        if (is_string($objectOrClass)) {
+            $objectOrClass = new $objectOrClass();
+        }
+        parent::__construct($objectOrClass);
+        $this->object = $objectOrClass;
 
         $this->methods = collect($this->getMethods())->mapWithKeys(function (ReflectionMethod $method) {
             if ($method->isAbstract() || $method->isConstructor() || $method->isDestructor()) {
@@ -42,13 +59,16 @@ class Thief extends ReflectionClass
 
     /**
      * Make new instance of thief
-     * @param object $object
+     *
+     * Static function wrapper for making new instances of self
+     *
+     * @param object|string $objectOrClass Instance or fully qualified class name
      * @return self|null
      */
-    public static function make(object $object): ?self
+    public static function make($objectOrClass): ?self
     {
         try {
-            return new self($object);
+            return new self($objectOrClass);
         } catch(ReflectionException $e) {
             return null;
         }
@@ -56,11 +76,13 @@ class Thief extends ReflectionClass
 
     /**
      * Retrieve constant value
-     * @param string $name Constant name
      *
-     * @return mixed Constant value
+     * Retrieves object's constant's value if it exists
      *
-     * @throws ThiefMissingProperty
+     * @param string $name Constant's name
+     *
+     * @return mixed Stolen constant value
+     * @throws ThiefMissingProperty Thrown when constant is missing
      */
     public function const(string $name)
     {
@@ -72,11 +94,15 @@ class Thief extends ReflectionClass
 
     /**
      * Retrieve object's property reference
+     *
+     * Retrieve reference to object's property if it exists.
+     * This function works for normal properties as well as for
+     * static properties
+     *
      * @param string $property Property name
      *
      * @return mixed
-     *
-     * @throws ThiefMissingProperty
+     * @throws ThiefMissingProperty Thrown when property is missing
      */
     public function & getPropertyRef(string $property)
     {
@@ -96,34 +122,38 @@ class Thief extends ReflectionClass
     }
 
     /**
+     * Set object's property to new value
+     *
+     * This method is callable via magic method.
+     * It's exposed just in case there's overlapping
+     * with Thief's class properties
+     *
      * @param string $property Property name
-     * @param string $value Property value
-     * @return $this
+     * @param mixed $value New property value
+     *
+     * @return self
+     * @throws ThiefMissingProperty Thrown when property is missing
      */
-    public function set(string $property, string $value): self
+    public function set(string $property, $value): self
     {
         $ref = &$this->getPropertyRef($property);
         $ref = $value;
         return $this;
     }
 
-    public function __isset($property): bool
-    {
-        $var = $this->getPropertyRef($property);
-        return isset($var);
-    }
-
-    public function __set($property, $value)
-    {
-        $this->set($property, $value);
-    }
-
-    public function __get($property)
-    {
-        return $this->getPropertyRef($property);
-    }
-
-    public function __call($name, $arguments)
+    /**
+     * Call object's method
+     *
+     * This method is callable via magic method.
+     * It's exposed just in case there's overlapping
+     * with Thief's class methods
+     *
+     * @param string $name Method's name
+     * @param mixed ...$arguments Parameters passed to method
+     * @return mixed
+     * @throws ThiefMissingProperty Throw when method is missing
+     */
+    public function call(string $name, ...$arguments)
     {
         if (! $this->hasMethod($name)) {
             throw new ThiefMissingProperty($this->name, $name, 'method');
@@ -135,5 +165,47 @@ class Thief extends ReflectionClass
             }
             return $this->$name(...$arguments);
         }, $this->object, $this->object)->__invoke();
+    }
+
+    /**
+     * @internal
+     * @param $property
+     * @return bool
+     */
+    public function __isset($property): bool
+    {
+        $var = $this->getPropertyRef($property);
+        return isset($var);
+    }
+
+    /**
+     * @internal
+     * @param $property
+     * @param $value
+     */
+    public function __set($property, $value)
+    {
+        $this->set($property, $value);
+    }
+
+    /**
+     * @internal
+     * @param $property
+     * @return mixed
+     */
+    public function __get($property)
+    {
+        return $this->getPropertyRef($property);
+    }
+
+    /**
+     * @internal
+     * @param $name
+     * @param $arguments
+     * @return mixed
+     */
+    public function __call($name, $arguments)
+    {
+
     }
 }

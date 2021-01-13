@@ -6,9 +6,6 @@ namespace Goulash\Support\Thief\Exceptions;
 
 class ThiefMissingProperty extends \RuntimeException
 {
-    public const CONST = 'Constant';
-    public const STATIC = 'Static';
-
     /**
      * ThiefMissingProperty constructor.
      * @param string $className

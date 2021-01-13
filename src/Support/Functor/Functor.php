@@ -10,11 +10,27 @@ use RuntimeException;
 
 // TODO: Maybe strict type checks?
 //  Test accessibility violations
+
+/**
+ * Helper class for mapping parameter bags to methods and functions
+ *
+ * @todo strict type checks
+ * @todo test accessibility violations
+ *
+ * @package Goulash\Support\Functor
+ */
 class Functor
 {
     /**
-     * Map parameter bag to class method and invoke
-     * If method is constructor new object will be created and returned
+     * Maps parameter bag to class method and invoke
+     *
+     * Maps parameter bag to class method and invokes
+     * the requested function. If method is constructor
+     * new object will be created and returned.
+     * When `$array` parameter is set to true, parameter bag
+     * is treated as array of parameter bags and the function
+     * will be called multiple times and instead of result,
+     * will return array of results.
      *
      * @param string|object $class Fully qualified class namespace or object
      * @param string $method Method name
@@ -57,7 +73,13 @@ class Functor
     }
 
     /**
-     * Map parameter bag to function and invoke
+     * Maps parameter bag to function and invoke
+     *
+     * Maps parameter bag to function and invokes
+     * the requested function. When `$array` parameter is set to true, parameter bag
+     * is treated as array of parameter bags and the function
+     * will be called multiple times and instead of result,
+     * will return array of results.
      *
      * @param callable $function
      * @param array $bag Parameter bag
@@ -66,7 +88,7 @@ class Functor
      * @return mixed|mixed[] Result or `array` of results
      * @throws ReflectionException
      */
-    public static function mapFunc(callable $function, array $bag, bool $array = false)
+    public static function mapFunction(callable $function, array $bag, bool $array = false)
     {
         $reflection = new ReflectionFunction($function);
         $params     = $reflection->getParameters();
@@ -87,8 +109,15 @@ class Functor
     }
 
     /**
+     * Parameter mapper
+     *
+     * Maps parameter values from bag of parameter values.
+     *
      * @param ReflectionParameter[] $parameters Method parameters
      * @param mixed[] $bag Parameter bag to be mapped into method
+     *
+     * @internal
+     * @todo Test behavior for multiple optional parameters with one of them missing
      *
      * @return array Prepared array of parameters
      */
