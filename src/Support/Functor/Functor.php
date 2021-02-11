@@ -95,7 +95,7 @@ class Functor
                 $results[] = $class::$method(...self::mapper($params, $b));
             }
             if(is_object($class)) {
-                $results[] = $reflection->invokeArgs(...self::mapper($params, $b));
+                $results[] = $reflection->invokeArgs($class, self::mapper($params, $b));
             }
             else {
                 throw new RuntimeException("Method {$method} has to be of type static, non-static or constructor.");
