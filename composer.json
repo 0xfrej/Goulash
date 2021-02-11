@@ -3,7 +3,7 @@
     "description": "Various PHP utility classes for everyday use. Feel free to add yours.",
     "keywords": ["goulash", "utility"],
     "type": "library",
-    "license": "Apache 2",
+    "license": "Apache-2.0",
     "authors": [
         {
             "name": "Peter Karaba",
