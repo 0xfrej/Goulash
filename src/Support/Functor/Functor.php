@@ -2,7 +2,7 @@
 
 namespace Goulash\Support\Functor;
 
-use gReflectionException;
+use ReflectionException;
 use ReflectionFunction;
 use ReflectionMethod;
 use ReflectionParameter;
@@ -21,6 +21,42 @@ use RuntimeException;
  */
 class Functor
 {
+    /**
+     * Maps parameter bag to class constructor
+     *
+     * Maps parameter bag to class constructor
+     * When `$array` parameter is set to true, parameter bag
+     * is treated as array of parameter bags and the function
+     * will be called multiple times and instead of result,
+     * will return array of results.
+     *
+     * @param string|object $class Fully qualified class namespace
+     * @param array $bag Parameter bag
+     * @param bool $array Indicate if parameter bag is array of parameter bags
+     *
+     * @return object|object[] New `object` or `array` of new `objects`
+     * @throws ReflectionException
+     */
+    public static function mapConstructor($class, array $bag, bool $array = false)
+    {
+        $reflection = new ReflectionMethod($class, '__construct');
+        $params    = $reflection->getParameters();
+
+        if (!$array) {
+            $bag = [$bag];
+        }
+
+        $results = [];
+        foreach ($bag as $b) {
+            $results[] = new $class(...self::mapper($params, $b));
+        }
+
+        if ($array) {
+            return $results;
+        }
+        return $results[0];
+    }
+
     /**
      * Maps parameter bag to class method and invoke
      *
@@ -44,7 +80,7 @@ class Functor
     public static function mapMethod($class, string $method, array $bag, bool $array = false)
     {
         $reflection = new ReflectionMethod($class, $method);
-        $params     = $reflection->getParameters();
+        $params    = $reflection->getParameters();
 
         if (! $array) {
             $bag = [$bag];
@@ -91,7 +127,7 @@ class Functor
     public static function mapFunction(callable $function, array $bag, bool $array = false)
     {
         $reflection = new ReflectionFunction($function);
-        $params     = $reflection->getParameters();
+        $params    = $reflection->getParameters();
 
         if (! $array) {
             $bag = [$bag];
