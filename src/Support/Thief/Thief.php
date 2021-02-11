@@ -4,7 +4,6 @@ namespace Goulash\Support\Thief;
 
 use Closure;
 use Goulash\Support\Thief\Exceptions\ThiefMissingProperty;
-use Illuminate\Support\Collection;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -26,9 +25,9 @@ class Thief extends ReflectionClass
      *
      * Abstract, constructor, destructor methods are filtered
      *
-     * @var Collection|ReflectionMethod[]
+     * @var ReflectionMethod[]
      */
-    private $methods;
+    private $methods = [];
 
     /**
      * Thief constructor.
@@ -48,13 +47,14 @@ class Thief extends ReflectionClass
         parent::__construct($objectOrClass);
         $this->object = $objectOrClass;
 
-        $this->methods = collect($this->getMethods())->mapWithKeys(function (ReflectionMethod $method) {
+        foreach ($this->getMethods() as $method) {
             if ($method->isAbstract() || $method->isConstructor() || $method->isDestructor()) {
-                return null;
+                $this->methods[] = null;
+            } else {
+                $this->methods[$method->getName()] = $method;
             }
-
-            return [$method->getName() => $method];
-        })->filter();
+        }
+        $this->methods = array_filter($this->methods);
     }
 
     /**
@@ -155,12 +155,12 @@ class Thief extends ReflectionClass
      */
     public function call(string $name, ...$arguments)
     {
-        if (! $this->hasMethod($name)) {
+        if (! array_key_exists($name, $this->methods)) {
             throw new ThiefMissingProperty($this->name, $name, 'method');
         }
 
         return Closure::bind(function () use ($name, $arguments) {
-            if ($this->methods->contains($name)) {
+            if ($this->methods[$name]->isStatic()) {
                 return $this::$name(...$arguments);
             }
             return $this->$name(...$arguments);
@@ -206,6 +206,6 @@ class Thief extends ReflectionClass
      */
     public function __call($name, $arguments)
     {
-
+        return $this->call($name, ...$arguments);
     }
 }

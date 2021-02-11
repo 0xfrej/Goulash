@@ -2,7 +2,7 @@
 
 namespace Goulash\Support\Functor;
 
-use ReflectionException;
+use gReflectionException;
 use ReflectionFunction;
 use ReflectionMethod;
 use ReflectionParameter;
