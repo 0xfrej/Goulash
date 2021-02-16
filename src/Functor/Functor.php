@@ -16,7 +16,7 @@ use RuntimeException;
 class Functor
 {
     /**
-     * Maps parameter bag to class constgitructor
+     * Maps parameter bag to class constructor
      *
      * Maps parameter bag to class constructor
      * When `$array` parameter is set to true, parameter bag
