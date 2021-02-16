@@ -1,16 +1,17 @@
 <?php
 
-namespace Goulash\Support\Thief;
+namespace Goulash\Thief;
 
 use Closure;
-use Goulash\Support\Thief\Exceptions\ThiefMissingProperty;
+use Goulash\Thief\Exceptions\ThiefMissingProperty;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
 
 /**
  * Helper class for accessing inaccessible properties and methods
- * @package Goulash\Support\Thief
+ *
+ * @package Goulash\Thief
  */
 class Thief extends ReflectionClass
 {

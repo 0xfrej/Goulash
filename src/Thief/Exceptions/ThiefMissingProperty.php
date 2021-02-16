@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Goulash\Support\Thief\Exceptions;
+namespace Goulash\Thief\Exceptions;
 
 
 class ThiefMissingProperty extends \RuntimeException

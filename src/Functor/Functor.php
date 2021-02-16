@@ -1,6 +1,6 @@
 <?php
 
-namespace Goulash\Support\Functor;
+namespace Goulash\Functor;
 
 use ReflectionException;
 use ReflectionFunction;
@@ -8,16 +8,10 @@ use ReflectionMethod;
 use ReflectionParameter;
 use RuntimeException;
 
-// TODO: Maybe strict type checks?
-//  Test accessibility violations
-
 /**
  * Helper class for mapping parameter bags to methods and functions
  *
- * @todo strict type checks
- * @todo test accessibility violations
- *
- * @package Goulash\Support\Functor
+ * @package Goulash\Functor
  */
 class Functor
 {
@@ -30,14 +24,14 @@ class Functor
      * will be called multiple times and instead of result,
      * will return array of results.
      *
-     * @param string|object $class Fully qualified class namespace
+     * @param string $class Fully qualified class namespace
      * @param array $bag Parameter bag
      * @param bool $array Indicate if parameter bag is array of parameter bags
      *
      * @return object|object[] New `object` or `array` of new `objects`
      * @throws ReflectionException
      */
-    public static function mapConstructor($class, array $bag, bool $array = false)
+    public static function mapConstructor(string $class, array $bag, bool $array = false)
     {
         $reflection = new ReflectionMethod($class, '__construct');
         $params    = $reflection->getParameters();
@@ -91,14 +85,14 @@ class Functor
             if ($reflection->isConstructor()) {
                 $results[] = new $class(...self::mapper($params, $b));
             }
-            if ($reflection->isStatic()) {
+            else if ($reflection->isStatic()) {
                 $results[] = $class::$method(...self::mapper($params, $b));
             }
-            if(is_object($class)) {
+            else if(is_object($class)) {
                 $results[] = $reflection->invokeArgs($class, self::mapper($params, $b));
             }
             else {
-                throw new RuntimeException("Method {$method} has to be of type static, non-static or constructor.");
+                throw new RuntimeException("Method {$method} has to be of type static, non-static (on instance) or constructor.");
             }
         }
 
@@ -135,7 +129,7 @@ class Functor
 
         $results = [];
         foreach ($bag as $b) {
-            $results[] = $reflection->invokeArgs(...self::mapper($params, $b));
+            $results[] = $reflection->invokeArgs(self::mapper($params, $b));
         }
 
         if ($array) {
@@ -152,30 +146,44 @@ class Functor
      * @param ReflectionParameter[] $parameters Method parameters
      * @param mixed[] $bag Parameter bag to be mapped into method
      *
-     * @internal
-     * @todo Test behavior for multiple optional parameters with one of them missing
-     *
      * @return array Prepared array of parameters
+     * @throws ReflectionException
+     * @internal
+     *
      */
     protected static function mapper(array $parameters, array $bag): array
     {
-        $mapped = [];
+        if (static::is_assoc($bag)) {
+            $mapped = [];
 
-        foreach ($parameters as $param) {
-            $name = $param->getName();
+            foreach ($parameters as $param) {
+                $name = $param->getName();
 
-            if (! array_key_exists($name, $bag)) {
-                if (! $param->isOptional()) {
-                    throw new RuntimeException("Required parameter {$name} is missing in parameter bag!");
+                if (! array_key_exists($name, $bag)) {
+                    if (! $param->isOptional()) {
+                        throw new RuntimeException("Required parameter {$name} is missing in parameter bag!");
+                    }
+
+                    $mapped[$param->getPosition()] = $param->getDefaultValue();
                 }
-                // TODO: Test how this will behave when there are multiple optional parameters and one is missing
-                //  Maybe refactor to automatically infer missing optional parameters if there are more
-                continue;
+                else {
+                    $mapped[$param->getPosition()] = $bag[$name];
+                }
             }
 
-            $mapped[$param->getPosition()] = $bag[$name];
+            return $mapped;
         }
 
-        return $mapped;
+        return $bag;
+    }
+
+    protected static function is_assoc($a): bool
+    {
+        foreach (array_keys($a) as $key) {
+            if (!is_int($key)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
