@@ -1,4 +1,5 @@
 {
+    "version": "0.0.1",
     "name": "lai0n/goulash",
     "description": "Various PHP utility classes for everyday use. Feel free to add yours.",
     "keywords": ["goulash", "utility"],
