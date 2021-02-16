@@ -3,7 +3,9 @@
 
 namespace Goulash\Thief\Exceptions;
 
-
+/**
+ * @package Goulash\Thief\Exceptions
+ */
 class ThiefMissingProperty extends \RuntimeException
 {
     /**

@@ -1,104 +1,109 @@
 Search.appendIndex(
     [
                 {
-            "fqsen": "\\Goulash\\Support\\Functor\\Functor",
+            "fqsen": "\\Goulash\\Functor\\Functor",
             "name": "Functor",
             "summary": "Helper\u0020class\u0020for\u0020mapping\u0020parameter\u0020bags\u0020to\u0020methods\u0020and\u0020functions",
-            "url": "classes/Goulash-Support-Functor-Functor.html"
+            "url": "classes/Goulash-Functor-Functor.html"
         },                {
-            "fqsen": "\\Goulash\\Support\\Functor\\Functor\u003A\u003AmapMethod\u0028\u0029",
+            "fqsen": "\\Goulash\\Functor\\Functor\u003A\u003AmapConstructor\u0028\u0029",
+            "name": "mapConstructor",
+            "summary": "Maps\u0020parameter\u0020bag\u0020to\u0020class\u0020constructor",
+            "url": "classes/Goulash-Functor-Functor.html#method_mapConstructor"
+        },                {
+            "fqsen": "\\Goulash\\Functor\\Functor\u003A\u003AmapMethod\u0028\u0029",
             "name": "mapMethod",
             "summary": "Maps\u0020parameter\u0020bag\u0020to\u0020class\u0020method\u0020and\u0020invoke",
-            "url": "classes/Goulash-Support-Functor-Functor.html#method_mapMethod"
+            "url": "classes/Goulash-Functor-Functor.html#method_mapMethod"
         },                {
-            "fqsen": "\\Goulash\\Support\\Functor\\Functor\u003A\u003AmapFunction\u0028\u0029",
+            "fqsen": "\\Goulash\\Functor\\Functor\u003A\u003AmapFunction\u0028\u0029",
             "name": "mapFunction",
             "summary": "Maps\u0020parameter\u0020bag\u0020to\u0020function\u0020and\u0020invoke",
-            "url": "classes/Goulash-Support-Functor-Functor.html#method_mapFunction"
+            "url": "classes/Goulash-Functor-Functor.html#method_mapFunction"
         },                {
-            "fqsen": "\\Goulash\\Support\\Thief\\Exceptions\\ThiefMissingProperty",
+            "fqsen": "\\Goulash\\Functor\\Functor\u003A\u003Ais_assoc\u0028\u0029",
+            "name": "is_assoc",
+            "summary": "",
+            "url": "classes/Goulash-Functor-Functor.html#method_is_assoc"
+        },                {
+            "fqsen": "\\Goulash\\Thief\\Exceptions\\ThiefMissingProperty",
             "name": "ThiefMissingProperty",
             "summary": "",
-            "url": "classes/Goulash-Support-Thief-Exceptions-ThiefMissingProperty.html"
+            "url": "classes/Goulash-Thief-Exceptions-ThiefMissingProperty.html"
         },                {
-            "fqsen": "\\Goulash\\Support\\Thief\\Exceptions\\ThiefMissingProperty\u003A\u003A__construct\u0028\u0029",
+            "fqsen": "\\Goulash\\Thief\\Exceptions\\ThiefMissingProperty\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
             "summary": "ThiefMissingProperty\u0020constructor.",
-            "url": "classes/Goulash-Support-Thief-Exceptions-ThiefMissingProperty.html#method___construct"
+            "url": "classes/Goulash-Thief-Exceptions-ThiefMissingProperty.html#method___construct"
         },                {
-            "fqsen": "\\Goulash\\Support\\Thief\\Thief",
+            "fqsen": "\\Goulash\\Thief\\Thief",
             "name": "Thief",
             "summary": "Helper\u0020class\u0020for\u0020accessing\u0020inaccessible\u0020properties\u0020and\u0020methods",
-            "url": "classes/Goulash-Support-Thief-Thief.html"
+            "url": "classes/Goulash-Thief-Thief.html"
         },                {
-            "fqsen": "\\Goulash\\Support\\Thief\\Thief\u003A\u003A__construct\u0028\u0029",
+            "fqsen": "\\Goulash\\Thief\\Thief\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
             "summary": "Thief\u0020constructor.",
-            "url": "classes/Goulash-Support-Thief-Thief.html#method___construct"
+            "url": "classes/Goulash-Thief-Thief.html#method___construct"
         },                {
-            "fqsen": "\\Goulash\\Support\\Thief\\Thief\u003A\u003Amake\u0028\u0029",
+            "fqsen": "\\Goulash\\Thief\\Thief\u003A\u003Amake\u0028\u0029",
             "name": "make",
             "summary": "Make\u0020new\u0020instance\u0020of\u0020thief",
-            "url": "classes/Goulash-Support-Thief-Thief.html#method_make"
+            "url": "classes/Goulash-Thief-Thief.html#method_make"
         },                {
-            "fqsen": "\\Goulash\\Support\\Thief\\Thief\u003A\u003Aconst\u0028\u0029",
+            "fqsen": "\\Goulash\\Thief\\Thief\u003A\u003Aconst\u0028\u0029",
             "name": "const",
             "summary": "Retrieve\u0020constant\u0020value",
-            "url": "classes/Goulash-Support-Thief-Thief.html#method_const"
+            "url": "classes/Goulash-Thief-Thief.html#method_const"
         },                {
-            "fqsen": "\\Goulash\\Support\\Thief\\Thief\u003A\u003AgetPropertyRef\u0028\u0029",
+            "fqsen": "\\Goulash\\Thief\\Thief\u003A\u003AgetPropertyRef\u0028\u0029",
             "name": "getPropertyRef",
             "summary": "Retrieve\u0020object\u0027s\u0020property\u0020reference",
-            "url": "classes/Goulash-Support-Thief-Thief.html#method_getPropertyRef"
+            "url": "classes/Goulash-Thief-Thief.html#method_getPropertyRef"
         },                {
-            "fqsen": "\\Goulash\\Support\\Thief\\Thief\u003A\u003Aset\u0028\u0029",
+            "fqsen": "\\Goulash\\Thief\\Thief\u003A\u003Aset\u0028\u0029",
             "name": "set",
             "summary": "Set\u0020object\u0027s\u0020property\u0020to\u0020new\u0020value",
-            "url": "classes/Goulash-Support-Thief-Thief.html#method_set"
+            "url": "classes/Goulash-Thief-Thief.html#method_set"
         },                {
-            "fqsen": "\\Goulash\\Support\\Thief\\Thief\u003A\u003Acall\u0028\u0029",
+            "fqsen": "\\Goulash\\Thief\\Thief\u003A\u003Acall\u0028\u0029",
             "name": "call",
             "summary": "Call\u0020object\u0027s\u0020method",
-            "url": "classes/Goulash-Support-Thief-Thief.html#method_call"
+            "url": "classes/Goulash-Thief-Thief.html#method_call"
         },                {
-            "fqsen": "\\Goulash\\Support\\Thief\\Thief\u003A\u003A\u0024object",
+            "fqsen": "\\Goulash\\Thief\\Thief\u003A\u003A\u0024object",
             "name": "object",
             "summary": "Original\u0020object\u0020instance",
-            "url": "classes/Goulash-Support-Thief-Thief.html#property_object"
+            "url": "classes/Goulash-Thief-Thief.html#property_object"
         },                {
-            "fqsen": "\\Goulash\\Support\\Thief\\Thief\u003A\u003A\u0024methods",
+            "fqsen": "\\Goulash\\Thief\\Thief\u003A\u003A\u0024methods",
             "name": "methods",
             "summary": "Filtered\u0020collection\u0020of\u0020methods",
-            "url": "classes/Goulash-Support-Thief-Thief.html#property_methods"
+            "url": "classes/Goulash-Thief-Thief.html#property_methods"
         },                {
             "fqsen": "\\",
             "name": "\\",
             "summary": "",
             "url": "namespaces/default.html"
         },                {
-            "fqsen": "\\Goulash\\Support\\Functor",
+            "fqsen": "\\Goulash\\Functor",
             "name": "Functor",
             "summary": "",
-            "url": "namespaces/goulash-support-functor.html"
-        },                {
-            "fqsen": "\\Goulash\\Support",
-            "name": "Support",
-            "summary": "",
-            "url": "namespaces/goulash-support.html"
+            "url": "namespaces/goulash-functor.html"
         },                {
             "fqsen": "\\Goulash",
             "name": "Goulash",
             "summary": "",
             "url": "namespaces/goulash.html"
         },                {
-            "fqsen": "\\Goulash\\Support\\Thief\\Exceptions",
+            "fqsen": "\\Goulash\\Thief\\Exceptions",
             "name": "Exceptions",
             "summary": "",
-            "url": "namespaces/goulash-support-thief-exceptions.html"
+            "url": "namespaces/goulash-thief-exceptions.html"
         },                {
-            "fqsen": "\\Goulash\\Support\\Thief",
+            "fqsen": "\\Goulash\\Thief",
             "name": "Thief",
             "summary": "",
-            "url": "namespaces/goulash-support-thief.html"
+            "url": "namespaces/goulash-thief.html"
         }            ]
 );
