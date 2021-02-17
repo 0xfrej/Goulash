@@ -49,13 +49,10 @@ class Thief extends ReflectionClass
         $this->object = $objectOrClass;
 
         foreach ($this->getMethods() as $method) {
-            if ($method->isAbstract() || $method->isConstructor() || $method->isDestructor()) {
-                $this->methods[] = null;
-            } else {
+            if (! ($method->isAbstract() || $method->isConstructor() || $method->isDestructor())) {
                 $this->methods[$method->getName()] = $method;
             }
         }
-        $this->methods = array_filter($this->methods);
     }
 
     /**
@@ -69,7 +66,7 @@ class Thief extends ReflectionClass
     public static function make($objectOrClass): ?self
     {
         try {
-            return new self($objectOrClass);
+            return new static($objectOrClass);
         } catch(ReflectionException $e) {
             return null;
         }
@@ -111,9 +108,11 @@ class Thief extends ReflectionClass
             throw new ThiefMissingProperty($this->name, $property, 'property');
         }
 
+        $self = $this;
+
         /** @noinspection PhpPassByRefInspection */
-        $value = & Closure::bind(function & () use ($property) {
-            if ($this->getProperty($property)->isStatic()) {
+        $value = & Closure::bind(function & () use ($property, $self) {
+            if ($self->getProperty($property)->isStatic()) {
                 return $this::${$property};
             }
             return $this->$property;
@@ -160,8 +159,10 @@ class Thief extends ReflectionClass
             throw new ThiefMissingProperty($this->name, $name, 'method');
         }
 
-        return Closure::bind(function () use ($name, $arguments) {
-            if ($this->methods[$name]->isStatic()) {
+        $self = $this;
+
+        return Closure::bind(function () use ($name, $arguments, $self) {
+            if ($self->methods[$name]->isStatic()) {
                 return $this::$name(...$arguments);
             }
             return $this->$name(...$arguments);
