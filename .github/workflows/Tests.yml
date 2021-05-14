@@ -1,16 +1,10 @@
-name: PHP Composer
-
+name: Tests
 on:
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
-
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
 
@@ -29,5 +23,14 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
 
-    - name: Run test suite
+    - name: Run test suite for php 7.3
+      uses: MilesChou/composer-action/7.3/install@master
       run:  php vendor/bin/phpunit
+
+    - name: Run test suite for php 7.4
+      uses: MilesChou/composer-action/7.4/install@master
+      run: php vendor/bin/phpunit
+
+    - name: Run test suite for php 8.0
+      uses: MilesChou/composer-action/8.0/install@master
+      run: php vendor/bin/phpunit
