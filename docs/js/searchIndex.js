@@ -38,7 +38,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Goulash\\Thief\\Thief",
             "name": "Thief",
-            "summary": "Helper\u0020class\u0020for\u0020accessing\u0020inaccessible\u0020properties\u0020and\u0020methods",
+            "summary": "Helper\u0020injector\u0020class\u0020for\u0020accessing\u0020inaccessible\u0020properties\u0020and\u0020methods",
             "url": "classes/Goulash-Thief-Thief.html"
         },                {
             "fqsen": "\\Goulash\\Thief\\Thief\u003A\u003A__construct\u0028\u0029",
@@ -71,10 +71,25 @@ Search.appendIndex(
             "summary": "Call\u0020object\u0027s\u0020method",
             "url": "classes/Goulash-Thief-Thief.html#method_call"
         },                {
+            "fqsen": "\\Goulash\\Thief\\Thief\u003A\u003AbindAndCall\u0028\u0029",
+            "name": "bindAndCall",
+            "summary": "Bind\u0020and\u0020invoke\u0020closure",
+            "url": "classes/Goulash-Thief-Thief.html#method_bindAndCall"
+        },                {
+            "fqsen": "\\Goulash\\Thief\\Thief\u003A\u003AbindAndCallRef\u0028\u0029",
+            "name": "bindAndCallRef",
+            "summary": "Bind\u0020and\u0020invoke\u0020closure",
+            "url": "classes/Goulash-Thief-Thief.html#method_bindAndCallRef"
+        },                {
             "fqsen": "\\Goulash\\Thief\\Thief\u003A\u003A\u0024object",
             "name": "object",
             "summary": "Original\u0020object\u0020instance",
             "url": "classes/Goulash-Thief-Thief.html#property_object"
+        },                {
+            "fqsen": "\\Goulash\\Thief\\Thief\u003A\u003A\u0024reflected",
+            "name": "reflected",
+            "summary": "Reflected\u0020object\u0020instance",
+            "url": "classes/Goulash-Thief-Thief.html#property_reflected"
         },                {
             "fqsen": "\\Goulash\\Thief\\Thief\u003A\u003A\u0024methods",
             "name": "methods",

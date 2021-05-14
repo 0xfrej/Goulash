@@ -1,6 +1,6 @@
 <?php
 
-namespace Functor;
+namespace Goulash\Tests\Functor;
 
 use Goulash\Functor\Functor;
 use PHPUnit\Framework\TestCase;
@@ -74,13 +74,13 @@ class FunctorTest extends TestCase
         $arrayOfBags = [];
 
         foreach ($bags as $bag) {
-            self::assertSame($bag['expected'], Functor::mapFunction('Functor\concreteFunction', $bag['bag']));
+            self::assertSame($bag['expected'], Functor::mapFunction('Goulash\Tests\Functor\concreteFunction', $bag['bag']));
 
             // prepare expected results for next assertion
             $expected[]  = $bag['expected'];
             $arrayOfBags[] = $bag['bag'];
         }
 
-        self::assertSame($expected, Functor::mapFunction('Functor\concreteFunction', $arrayOfBags, true));
+        self::assertSame($expected, Functor::mapFunction('Goulash\Tests\Functor\concreteFunction', $arrayOfBags, true));
     }
 }

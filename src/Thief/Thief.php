@@ -9,17 +9,23 @@ use ReflectionException;
 use ReflectionMethod;
 
 /**
- * Helper class for accessing inaccessible properties and methods
+ * Helper injector class for accessing inaccessible properties and methods
  *
  * @package Goulash\Thief
  */
-class Thief extends ReflectionClass
+class Thief
 {
     /**
      * Original object instance
      * @var object
      */
     private $object;
+
+    /**
+     * Reflected object instance
+     * @var object
+     */
+    private $reflected;
 
     /**
      * Filtered collection of methods
@@ -39,16 +45,22 @@ class Thief extends ReflectionClass
      *
      * @param object|string $objectOrClass Instance or fully qualified class name
      * @throws ReflectionException
+     * @throws \Exception
      */
     public function __construct($objectOrClass)
     {
         if (is_string($objectOrClass)) {
             $objectOrClass = new $objectOrClass();
         }
-        parent::__construct($objectOrClass);
-        $this->object = $objectOrClass;
 
-        foreach ($this->getMethods() as $method) {
+        if ($objectOrClass instanceof \Closure) {
+            throw new \Exception("Constructor parameter 'objectOrClass' must be FQN of a class or an object and cannot be an Closure");
+        }
+
+        $this->object = $objectOrClass;
+        $this->reflected = new ReflectionClass($objectOrClass);
+
+        foreach ($this->reflected->getMethods() as $method) {
             if (! ($method->isAbstract() || $method->isConstructor() || $method->isDestructor())) {
                 $this->methods[$method->getName()] = $method;
             }
@@ -62,6 +74,7 @@ class Thief extends ReflectionClass
      *
      * @param object|string $objectOrClass Instance or fully qualified class name
      * @return self|null
+     * @throws \Exception
      */
     public static function make($objectOrClass): ?self
     {
@@ -84,10 +97,10 @@ class Thief extends ReflectionClass
      */
     public function const(string $name)
     {
-        if ($this->hasConstant($name)) {
-            return $this->getConstant($name);
+        if ($this->reflected->hasConstant($name)) {
+            return $this->reflected->getConstant($name);
         }
-        throw new ThiefMissingProperty($this->name, $name, 'constant');
+        throw new ThiefMissingProperty($this->reflected->getName(), $name, 'constant');
     }
 
     /**
@@ -104,15 +117,15 @@ class Thief extends ReflectionClass
      */
     public function & getPropertyRef(string $property)
     {
-        if (! $this->hasProperty($property)) {
-            throw new ThiefMissingProperty($this->name, $property, 'property');
+        if (! $this->reflected->hasProperty($property)) {
+            throw new ThiefMissingProperty($this->reflected->getName(), $property, 'property');
         }
 
-        $self = $this;
+        $reflected = $this->reflected;
 
         /** @noinspection PhpPassByRefInspection */
-        $value = & Closure::bind(function & () use ($property, $self) {
-            if ($self->getProperty($property)->isStatic()) {
+        $value = & Closure::bind(function & () use ($property, $reflected) {
+            if ($reflected->getProperty($property)->isStatic()) {
                 return $this::${$property};
             }
             return $this->$property;
@@ -156,17 +169,44 @@ class Thief extends ReflectionClass
     public function call(string $name, ...$arguments)
     {
         if (! array_key_exists($name, $this->methods)) {
-            throw new ThiefMissingProperty($this->name, $name, 'method');
+            throw new ThiefMissingProperty($this->reflected->getName(), $name, 'method');
         }
 
-        $self = $this;
+        $methods = $this->methods;
 
-        return Closure::bind(function () use ($name, $arguments, $self) {
-            if ($self->methods[$name]->isStatic()) {
+        return Closure::bind(function () use ($name, $arguments, $methods) {
+            if ($methods[$name]->isStatic()) {
                 return $this::$name(...$arguments);
             }
             return $this->$name(...$arguments);
         }, $this->object, $this->object)->__invoke();
+    }
+
+    /**
+     * Bind and invoke closure
+     *
+     * Can be used to overcome collision with reserved names of this class with the target'
+     *
+     * @param Closure $closure
+     * @return mixed
+     */
+    public function bindAndCall(Closure $closure) {
+        return Closure::bind($closure, $this->object, $this->object)->__invoke();
+    }
+
+    /**
+     * Bind and invoke closure
+     *
+     * Can be used to overcome collision with reserved names of this class with the target'
+     * This method returns a reference to return value of the closure
+     *
+     * @param Closure $closure
+     * @return mixed
+     */
+    public function & bindAndCallRef(Closure $closure) {
+        /** @noinspection PhpPassByRefInspection */
+        $value = & Closure::bind($closure, $this->object, $this->object)->__invoke();
+        return $value;
     }
 
     /**
