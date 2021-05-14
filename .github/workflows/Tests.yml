@@ -20,17 +20,20 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-php-
 
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress
+    - name: Install dependencies for php 7.3
+      uses: MilesChou/composer-action/7.3/install@master
 
     - name: Run test suite for php 7.3
-      uses: MilesChou/composer-action/7.3/install@master
       run:  php vendor/bin/phpunit
 
-    - name: Run test suite for php 7.4
+    - name: Install dependencies for php 7.4
       uses: MilesChou/composer-action/7.4/install@master
+
+    - name: Run test suite for php 7.4
       run: php vendor/bin/phpunit
+
+    - name: Install dependencies for php 8.0
+      uses: MilesChou/composer-action/8.0/install@master
 
     - name: Run test suite for php 8.0
       uses: MilesChou/composer-action/8.0/install@master
-      run: php vendor/bin/phpunit
